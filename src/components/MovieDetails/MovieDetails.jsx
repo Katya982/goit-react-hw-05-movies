@@ -44,7 +44,6 @@ const MovieDetails = () => {
   return (
     <div>
       <Link to={goBackUrl}>
-        {/* <Link to={location.state?.from || '/'}> */}
         <Button>
           <AiFillLeftCircle /> Go back
         </Button>
