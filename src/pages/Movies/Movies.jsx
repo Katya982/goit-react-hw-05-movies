@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState , useEffect, useCallback} from 'react';
 import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import { HandleMovieSearch } from '../../service/config';
 
@@ -15,13 +15,7 @@ const Movies = () => {
     setSearchParams(nextParams);
   };
 
-  useEffect(() => {
-    if (movieName) {
-      handleSearch();
-    }
-  }, []);
-
-  const handleSearch = async () => {
+    const handleSearch = useCallback(async () => {
     try {
       setLoading(true);
       const response = await HandleMovieSearch(movieName);
@@ -32,7 +26,13 @@ const Movies = () => {
     } finally {
       setLoading(false);
     }
-  };
+    },[movieName]);
+
+  useEffect(() => {
+    if (movieName) {
+      handleSearch();
+    }
+  }, [handleSearch, movieName]);
 
   return (
     <div>
@@ -55,7 +55,7 @@ const Movies = () => {
       {searched && loading ? (
         <p>Loading...</p>
       ) : searched && searchResults.length === 0 && movieName ? (
-        <h2>🔎 Nothing found</h2>
+        <h2>Nothing found</h2>
       ) : searched && (
         <div>
           <ul>
@@ -72,3 +72,4 @@ const Movies = () => {
 };
 
 export default Movies;
+
