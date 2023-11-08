@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { Link, useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { Link, useParams, useLocation, Outlet} from 'react-router-dom';
 import { fetchMovieDetails } from '../../service/config';
 import { AiFillLeftCircle } from "react-icons/ai";
+import notfoundphoto from '../image/notfoundphoto.jpg'
 
 import { MovieCard, MovieInfo, Button, MoreInfo } from "./MovieDetails.styled"; 
 
@@ -10,16 +11,15 @@ const linkStyle = {
   color: 'black',
   listStyle: 'none',
   textTransform: 'uppercase'
-
-
 };
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const navigate = useNavigate();
   const location = useLocation();
-    
+  const [goBackUrl, setGoBackUrl] = useState(location.state?.from || '/');
+
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -41,21 +41,23 @@ const MovieDetails = () => {
     <span key={genre.id}>{genre.name}</span>
   ));
     
-  const handleGoBack = () => {
-    navigate(location.state?.from || '/');
-  };
-
   return (
     <div>
-      <Button onClick={handleGoBack}> <AiFillLeftCircle /> Go back</Button>
-     
+      <Link to={goBackUrl}>
+        {/* <Link to={location.state?.from || '/'}> */}
+        <Button>
+          <AiFillLeftCircle /> Go back
+        </Button>
+      </Link>
+         
+    
       <h1>{movieDetails.title}</h1>
       <MovieCard>
       
         <img
           src={movieDetails.poster_path
             ? `https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`
-            : undefined
+            : `${notfoundphoto}`
           }
           alt={movieDetails.title}
         />
@@ -85,5 +87,7 @@ const MovieDetails = () => {
 }
 
 export default MovieDetails;
+
+
 
 

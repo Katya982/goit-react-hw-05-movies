@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchCast } from '../../service/config';
-import notfoundphoto from '../image/notfoundphoto.webp'
+import notfoundphoto from '../image/notfoundphoto.jpg'
 import {  CastList } from "./Cast.styled"; 
 
 

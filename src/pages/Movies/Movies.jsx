@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import { HandleMovieSearch } from '../../service/config';
 
@@ -14,6 +14,12 @@ const Movies = () => {
     const nextParams = query !== '' ? { query } : {};
     setSearchParams(nextParams);
   };
+
+  useEffect(() => {
+    if (movieName) {
+      handleSearch();
+    }
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -65,5 +71,8 @@ const Movies = () => {
   );
 };
 
-
 export default Movies;
+
+
+
+
