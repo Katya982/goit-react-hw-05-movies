@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { Link, useParams, useLocation, Outlet} from 'react-router-dom';
 import { fetchMovieDetails } from '../../service/config';
 import { AiFillLeftCircle } from "react-icons/ai";
@@ -17,7 +17,7 @@ const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const location = useLocation();
-  const [goBackUrl, setGoBackUrl] = useState(location.state?.from || '/');
+  const BackLinkLocationRef = useRef(location.state?.from ?? '/movies');
 
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const MovieDetails = () => {
     };
 
     fetchMovie();
-  }, [movieId, setGoBackUrl]);
+  }, [movieId]);
 
   if (!movieDetails) {
     return <div>Loading...</div>;
@@ -43,19 +43,12 @@ const MovieDetails = () => {
     
   return (
     <div>
-      <Link to={goBackUrl}>
+      <Link to={BackLinkLocationRef.current}>
         <Button>
           <AiFillLeftCircle /> Go back
         </Button>
       </Link>
-            {/* <Link to={location.state?.from || '/'}>
-         <Link to={location.state?.from || '/movies'}>
-        <Button>
-          <AiFillLeftCircle /> Go back
-        </Button>
-      </Link>
-          */}
-    
+      
       <h1>{movieDetails.title}</h1>
       <MovieCard>
       
